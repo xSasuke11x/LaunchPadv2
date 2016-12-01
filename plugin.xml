@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
+      <contribution
+            class="launchpadv2.CombinatorRefactoringContribution"
+            id="LaunchPadv2.create.combinator">
+      </contribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Create a new combinator"
+            id="menu:org.eclipse.ui.refactoring.menu"
+            label="Combinator ActionSet"
+            visible="true">
+         <menu
+               id="org.eclipse.jdt.ui.refactoring.menu"
+               label="Refactor"
+               path="edit">
+         </menu>
+         <action
+               class="launchpadv2.CombinatorAction"
+               definitionId="LaunchPadv2.create.combinator"
+               enablesFor="+"
+               helpContextId="launchpadv2.CreateCombinator"
+               id="LaunchPadv2.CreateCombinator"
+               label="Create a Combinator..."
+               menubarPath="org.eclipse.jdt.ui.refactoring.menu/"
+               style="push">
+         </action>
+      </actionSet>
+      <actionSet
+            description="Action set containing Eclipse Articles actions"
+            id="LaunchPadv2.actionSet"
+            label="Eclipse Articles"
+            visible="true">
+         <menu
+               id="launchpadv2.menu"
+               label="Eclipse &amp;Articles"
+               path="edit">
+            <separator
+                  name="combinatorSeparator">
+            </separator>
+         </menu>
+         <action
+               class="launchpadv2.CombinatorAction"
+               definitionId="launchpadv2.create.combinator"
+               enablesFor="1"
+               helpContextId="launchpadv2.CreateCombinator"
+               id="launchpadv2.CreateCombinator2"
+               label="Create a Combinator..."
+               style="push"
+               tooltip="Create a Combinator">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Eclipse Articles Refactoring Actions"
+            id="launchpadv2.category"
+            name="Refactor - Eclipse Articles">
+      </category>
+      <command
+            categoryId="launchpadv2.category"
+            description="Creates a combinator"
+            id="launchpadv2.create.combinator"
+            name="Create a Combinator">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.jdt.ui.refactoring.menu">
+         <separator
+               name="LaunchPadv2.topSeparator"
+               visible="true">
+         </separator>
+         <command
+               commandId="LaunchPadv2.CreateCombinatorPopup"
+               label="Create a Combinator..."
+               style="push">
+               
+               <visibleWhen>
+				  <or>
+				    <with variable="activePartId">
+				      <equals value="org.eclipse.jdt.ui.CompilationUnitEditor" />
+				    </with>
+				    <with variable="activeMenuSelection">
+				      <iterate ifEmpty="false" operator="and">
+				        <or>
+				          <adapt type="org.eclipse.jdt.core.IType" />
+				          <adapt type="org.eclipse.jdt.core.IMethod" />
+				          <adapt type="org.eclipse.jdt.core.ICompilationUnit" />
+				        </or>
+				      </iterate>
+				    </with>
+				  </or>
+				</visibleWhen>
+               
+         </command>
+         <separator
+               name="LaunchPadv2.bottomSeparator"
+               visible="true">
+         </separator>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="popup:org.eclipse.jdt.ui.refactoring.menu"
+            objectClass="launchpadv2.popupMenu">
+         <menu
+               id="LaunchPadv2.editorPopupMenu"
+               label="Create a Combinator..."
+               path="additions">
+         </menu>
+         <action
+               class="LaunchPadv2.popupMenu"
+               enablesFor="*"
+               id="LaunchPadv2.CreateCombinator2"
+               label="Create a Combinator..."
+               state="true"
+               style="push">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
