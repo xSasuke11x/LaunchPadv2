@@ -51,6 +51,7 @@
                helpContextId="launchpadv2.CreateCombinator"
                id="launchpadv2.CreateCombinator2"
                label="Create a Combinator..."
+               menubarPath="launchpadv2.menu/combinatorSeparator"
                style="push"
                tooltip="Create a Combinator">
          </action>
