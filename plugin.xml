@@ -31,31 +31,6 @@
                style="push">
          </action>
       </actionSet>
-      <actionSet
-            description="Action set containing Eclipse Articles actions"
-            id="LaunchPadv2.actionSet"
-            label="Eclipse Articles"
-            visible="true">
-         <menu
-               id="launchpadv2.menu"
-               label="Eclipse &amp;Articles"
-               path="edit">
-            <separator
-                  name="combinatorSeparator">
-            </separator>
-         </menu>
-         <action
-               class="launchpadv2.CombinatorAction"
-               definitionId="launchpadv2.create.combinator"
-               enablesFor="1"
-               helpContextId="launchpadv2.CreateCombinator"
-               id="launchpadv2.CreateCombinator2"
-               label="Create a Combinator..."
-               menubarPath="launchpadv2.menu/combinatorSeparator"
-               style="push"
-               tooltip="Create a Combinator">
-         </action>
-      </actionSet>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

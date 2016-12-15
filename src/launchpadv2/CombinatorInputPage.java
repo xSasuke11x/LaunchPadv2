@@ -132,41 +132,38 @@ public class CombinatorInputPage extends UserInputWizardPage {
 				
 				IWorkbench wb = PlatformUI.getWorkbench();
 				IWorkbenchWindow window = wb.getActiveWorkbenchWindow();
-				IWorkbenchPage page = window.getActivePage();
-				IEditorPart editor = page.getActiveEditor();
-				IEditorInput input = editor.getEditorInput();
-				//IPath path = ((IFileEditorInput)input).getFile().getFullPath();
-				IPath path = ((IFileEditorInput)input).getFile().getLocation();
-				//String sourceFileName = "C:/Users/kmtran/Desktop/runtime-New_configuration" + path.toFile();
-				//File sourceFile = new File(sourceFileName);
-				File sourceFile = path.toFile();
-
-				//String targetFileName = "C:/Users/kmtran/Desktop/runtime-New_configuration/Example/testDirectory/A.java";
-				//IWorkspace workspace = ResourcesPlugin.getWorkspace(); 
-				//String targetFileName = workspace.getRoot().getLocation().toFile().getPath().toString() + "/testDirectory/A.java";
-				// Get the root folder and set the directory name
-				String targetFileName = sourceFile.getPath().toString().substring(0, sourceFile.getPath().toString().indexOf("src")) 
-						+ "/testDirectory/" + fNameField.getText() + ".java";
-				
-				// Create the target file
-				File targetFile = new File(targetFileName);
-				
-				// Create the directory if it does not exist
-				targetFile.getParentFile().mkdirs();
-				
-				// Get the selected text
-				IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-				ITextEditor textEditor = null;
-				
-				if (part instanceof ITextEditor) {
-					textEditor = (ITextEditor)part;
-				    IDocumentProvider provider = textEditor.getDocumentProvider();
-				    IDocument document = provider.getDocument(textEditor.getEditorInput());
-				}
-				
-				if (targetFile.exists())
-					targetFile.delete();
-				else {
+				if (window != null) {
+					IWorkbenchPage page = window.getActivePage();
+					IEditorPart editor = page.getActiveEditor();
+					IEditorInput input = editor.getEditorInput();
+					IPath path = ((IFileEditorInput)input).getFile().getLocation();
+					File sourceFile = path.toFile();
+	
+					// Get the root folder and set the directory name
+					String targetFileName = sourceFile.getPath().toString().substring(0, sourceFile.getPath().toString().indexOf("src")) 
+							+ "/testDirectory/" + fNameField.getText() + ".java";
+					
+					// Create the target file
+					File targetFile = new File(targetFileName);
+					
+					// Create the directory if it does not exist
+					targetFile.getParentFile().mkdirs();
+					
+					// Get the selected text
+					IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+					ITextEditor textEditor = null;
+					
+					if (part instanceof ITextEditor) {
+						textEditor = (ITextEditor)part;
+					    IDocumentProvider provider = textEditor.getDocumentProvider();
+					    IDocument document = provider.getDocument(textEditor.getEditorInput());
+					}
+					
+					// Delete the file if it exists
+					if (targetFile.exists())
+						targetFile.delete();
+					
+					// Overwrite/write to the file with the selected text
 					targetFile = new File(targetFileName);
 					String source = getSelectedText(textEditor);
 
@@ -219,14 +216,14 @@ public class CombinatorInputPage extends UserInputWizardPage {
 	}
 
 	void handleInputChanged() {
-		RefactoringStatus status= new RefactoringStatus();
-		CombinatorRefactoring refactoring= getCombinatorRefactoring();
+		RefactoringStatus status = new RefactoringStatus();
+		CombinatorRefactoring refactoring = getCombinatorRefactoring();
 		//status.merge(refactoring.setDeclaringTypeName(fTypeCombo.getText()));
 		status.merge(refactoring.setMethodName(fNameField.getText()));
 
 		setPageComplete(!status.hasError());
-		int severity= status.getSeverity();
-		String message= status.getMessageMatchingSeverity(severity);
+		int severity = status.getSeverity();
+		String message = status.getMessageMatchingSeverity(severity);
 		if (severity >= RefactoringStatus.INFO) {
 			setMessage(message, severity);
 		} else {
@@ -238,7 +235,7 @@ public class CombinatorInputPage extends UserInputWizardPage {
 		IJavaProject project = getCombinatorRefactoring().getMethod().getJavaProject();
 
 		IJavaElement[] elements = new IJavaElement[] { project};
-		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 
 		try {
 			SelectionStatusDialog dialog = (SelectionStatusDialog) JavaUI.createTypeDialog(getShell(), getContainer(), scope, IJavaElementSearchConstants.CONSIDER_CLASSES_AND_ENUMS, false);
